@@ -12,7 +12,7 @@ mongo_db = mongo_client["ai"]
 mongo_db_collection = mongo_db["signal_gb"]
 
 
-# func soc
+# func load data
 def load_data(vin, limit):
     soc_list = []
     condition_lte_80 = {
@@ -37,6 +37,26 @@ def load_data(vin, limit):
         soc_list.append(Soc(row["vin"], row["vehicleBaseData_soc"], int(row["collectTime"].timestamp())))
     print("soc_items len: ", len(soc_list))
     return soc_list
+
+
+# func split data
+def split_data(arr, min = 31):
+    idx = [0]
+    for i in range(0, len(arr) - 1):
+        if arr[i] > arr[i + 1]:
+            idx.append(i + 1)
+    idx.append(len(arr))
+
+    arr_list = []
+    for i in range(0, len(idx) - 1):
+        j = idx[i]
+        k = idx[i + 1]
+        arr_item = arr[j:k]
+        # print(arr_item)
+        if min <= len(arr_item):
+            arr_list.append(arr_item)
+
+    return arr_list
 
 
 # class soc
@@ -77,5 +97,8 @@ print("vin list: {0}".format(vins))
 # query socs (n>=100000)
 n = 1000
 socs = load_data("TEST0000000000021", n)
+socs_arr = []
 for soc in socs:
-    print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
+    # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
+    socs_arr.append(soc.value)
+socs_split_list = split_data(socs_arr)
