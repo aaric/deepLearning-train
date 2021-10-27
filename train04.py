@@ -8,6 +8,9 @@ import numpy as np
 import pymongo as pm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from keras.models import Sequential
+from keras.layers import Dense
+
 
 # mongo object
 mongo_client = pm.MongoClient("mongodb://10.0.11.50:27017")
@@ -146,9 +149,16 @@ for socs_m2d in socs_m2ds:
 x_data = np.asarray(soc_features).reshape(soc_idx, 30)
 y_data = np.asarray(soc_targets)
 x_train, x_test, y_train, y_test = train_test_split(x_data, y_data)
-print("train tts: {0}, {1}, {2}, {3}".format(x_train.shape, x_test.shape, y_train.shape, y_test.shape))
-
+# print("train tts: {0}, {1}, {2}, {3}".format(x_train.shape, x_test.shape, y_train.shape, y_test.shape))
 train_model = LinearRegression().fit(x_train, y_train)
 train_score = train_model.score(x_test, y_test)
 print("train score: {0}".format(train_score))
 
+
+# train loss
+model = Sequential()
+model.add(Dense(10, activation='relu', input_shape=(x_train.shape[1],)))
+model.add(Dense(1))
+model.compile(loss='mse', optimizer='rmsprop')
+model.summary()
+model.fit(x_train, y_train, batch_size=1000, epochs=256, validation_data=(x_test, y_test))
