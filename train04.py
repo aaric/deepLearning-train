@@ -9,7 +9,7 @@ import pymongo as pm
 # mongo object
 mongo_client = pm.MongoClient("mongodb://10.0.11.50:27017")
 mongo_db = mongo_client["ai"]
-mongo_db_collection = mongo_db["signal_gb"]
+mongo_collection = mongo_db["signal_gb"]
 
 
 # func load data
@@ -32,7 +32,7 @@ def load_data(vin, limit):
         "collectTime": 1,
         "vehicleBaseData_soc": 1
     }
-    rows = mongo_db_collection.find(condition_lte_80, projection=projection_soc).limit(limit).skip(1)
+    rows = mongo_collection.find(condition_lte_80, projection=projection_soc).limit(limit).skip(1)
     for row in rows:
         soc_list.append(Soc(row["vin"], row["vehicleBaseData_soc"], int(row["collectTime"].timestamp())))
     print("soc_items len: ", len(soc_list))
@@ -102,26 +102,34 @@ vins = [
 ]
 print("vin list: {0}".format(vins))
 
+
 # query socs (n>=100000)
-socs_idx = 0
-socs_total = 1000
-socs = load_data("TEST0000000000021", socs_total)
-socs_lines = []
-for soc in socs:
+soc_idx = 0
+soc_total = 1000
+soc_records = load_data("TEST0000000000021", soc_total)
+soc_lines = []
+for soc_record in soc_records:
     # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
-    socs_lines.append(soc.value)
+    soc_lines.append(soc_record.value)
+
 
 # convert linear array
-socs_split_lines = split_data(socs_lines)
+soc_split_lines = split_data(soc_lines)
 
-# convert matrix
-matrixs = []
-for socs_split_line in socs_split_lines:
-    split_matrix_data_list = split_matrix_data(socs_split_line)
-    socs_idx += len(split_matrix_data_list)
-    matrixs.extend(split_matrix_data_list)
+
+# convert matrix array
+socs_m2ds = []
+for soc_split_line in soc_split_lines:
+    split_matrix_data_list = split_matrix_data(soc_split_line)
+    socs_m2ds.extend(split_matrix_data_list)
+    soc_idx += len(split_matrix_data_list)
+    print("{0} - {1}".format(soc_idx, soc_total))
+
+
+# convert train matrix
+
 
 # print result
-for matrix in matrixs:
-    print(matrix)
-print("{0} - {1}".format(socs_idx, socs_total))
+for socs_m2d in socs_m2ds:
+    print(socs_m2d)
+print("{0} - {1}".format(soc_idx, soc_total))
