@@ -13,5 +13,5 @@ soc_lines = [11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
 x_data = np.array(soc_lines).reshape(1, 30)
 
 # train model load
-model = load_model("model/soc_gte80.h5")
+model = load_model("model/ep22mce_soc_lte80.h5")
 print("next soc: {0}".format(int(model.predict(x_data)[0, 0])))

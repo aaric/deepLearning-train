@@ -1,5 +1,5 @@
 """
-作业04 - 训练模型
+作业04 - 训练模型：soc -> 0-80
 
 @author Aaric
 @version 0.3.0-SNAPSHOT
@@ -159,4 +159,4 @@ model.summary()
 model.fit(x_train, y_train, batch_size=1000, epochs=256, validation_data=(x_test, y_test))
 
 # train model save
-model.save("model/soc_gte80.h5")
+model.save("model/ep22mce_soc_lte80.h5")
