@@ -15,14 +15,14 @@ def next_soc_lte80(arr):
     return model.predict(x_data)
 
 
-# gte80: train apply model
+# lte80: train apply model
 soc_lte80_lines = [11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13,
                    13, 13,
                    13, 13, 13]
 print("next soc: {0}".format(int(next_soc_lte80(soc_lte80_lines)[0, 0])))
 
 
-# lte80: load model and predict
+# gte80: load model and predict
 def next_soc_gte80(arr):
     x_data = np.array(arr).reshape(len(arr) // 30, 30)
     model = load_model("model/ep22mce_soc_gte80.h5")
