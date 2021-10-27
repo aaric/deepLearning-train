@@ -40,7 +40,7 @@ def load_data(vin, limit):
     rows = mongo_collection.find(condition_lte_80, projection=projection_soc).limit(limit).skip(1)
     for row in rows:
         soc_list.append(Soc(row["vin"], row["vehicleBaseData_soc"], int(row["collectTime"].timestamp())))
-    print("soc_items len: ", len(soc_list))
+    print("load {0} records length: {1}".format(vin, len(soc_list)))
     return soc_list
 
 
@@ -109,35 +109,37 @@ print("vin list: {0}".format(vins))
 
 # query socs (n>=100000)
 soc_idx = 0
-soc_total = 1000
-soc_records = load_data("TEST0000000000021", soc_total)
-soc_lines = []
-for soc_record in soc_records:
-    # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
-    soc_lines.append(soc_record.value)
+soc_total = 100000
+soc_m2ds = []
+for vin in vins:
+    # load mongo records
+    soc_records = load_data(vin, soc_total // len(vins))
+    soc_lines = []
+    for soc_record in soc_records:
+        # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
+        soc_lines.append(soc_record.value)
 
-# convert linear array
-soc_split_lines = split_data(soc_lines)
+    # convert linear array
+    soc_split_lines = split_data(soc_lines)
 
-# convert matrix array
-socs_m2ds = []
-for soc_split_line in soc_split_lines:
-    split_matrix_data_list = split_matrix_data(soc_split_line)
-    socs_m2ds.extend(split_matrix_data_list)
-    soc_idx += len(split_matrix_data_list)
+    # convert matrix array
+    for soc_split_line in soc_split_lines:
+        split_matrix_data_list = split_matrix_data(soc_split_line)
+        soc_m2ds.extend(split_matrix_data_list)
+        soc_idx += len(split_matrix_data_list)
+        print("{0} - {1}".format(soc_idx, soc_total))
+
+    # convert break
     if soc_idx > soc_total:
         print("{0} - {1}, over!".format(soc_idx, soc_total))
         break
-    else:
-        print("{0} - {1}".format(soc_idx, soc_total))
-print("socs_m2ds length: {0}", len(socs_m2ds))
 
 # convert train array
 soc_features = []
 soc_targets = []
-for socs_m2d in socs_m2ds:
-    soc_features.append(socs_m2d[0:-1])
-    soc_targets.append(socs_m2d[-1:])
+for soc_m2d in soc_m2ds:
+    soc_features.append(soc_m2d[0:-1])
+    soc_targets.append(soc_m2d[-1:])
 
 # train model score
 x_data = np.asarray(soc_features).reshape(soc_idx, 30)
