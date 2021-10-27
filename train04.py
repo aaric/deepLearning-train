@@ -40,7 +40,7 @@ def load_data(vin, limit):
 
 
 # func split data
-def split_data(arr, min = 31):
+def split_data(arr, min_length=31):
     idx = [0]
     for i in range(0, len(arr) - 1):
         if arr[i] > arr[i + 1]:
@@ -53,10 +53,18 @@ def split_data(arr, min = 31):
         k = idx[i + 1]
         arr_item = arr[j:k]
         # print(arr_item)
-        if min <= len(arr_item):
+        if min_length <= len(arr_item):
             arr_list.append(arr_item)
 
     return arr_list
+
+
+# func split matrix data
+def split_matrix_data(arr, matrix_length=31):
+    matrix_list = []
+    for i in range(0, len(arr) - matrix_length):
+        matrix_list.append(arr[i:i + 31])
+    return matrix_list
 
 
 # class soc
@@ -95,10 +103,25 @@ vins = [
 print("vin list: {0}".format(vins))
 
 # query socs (n>=100000)
-n = 1000
-socs = load_data("TEST0000000000021", n)
-socs_arr = []
+socs_idx = 0
+socs_total = 1000
+socs = load_data("TEST0000000000021", socs_total)
+socs_lines = []
 for soc in socs:
     # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
-    socs_arr.append(soc.value)
-socs_split_list = split_data(socs_arr)
+    socs_lines.append(soc.value)
+
+# convert linear array
+socs_split_lines = split_data(socs_lines)
+
+# convert matrix
+matrixs = []
+for socs_split_line in socs_split_lines:
+    split_matrix_data_list = split_matrix_data(socs_split_line)
+    socs_idx += len(split_matrix_data_list)
+    matrixs.extend(split_matrix_data_list)
+
+# print result
+for matrix in matrixs:
+    print(matrix)
+print("{0} - {1}".format(socs_idx, socs_total))
