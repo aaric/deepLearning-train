@@ -1,5 +1,5 @@
 """
-作业04 - 终结
+作业04 - 训练模型
 
 @author Aaric
 @version 0.3.0-SNAPSHOT
@@ -162,3 +162,7 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='rmsprop')
 model.summary()
 model.fit(x_train, y_train, batch_size=1000, epochs=256, validation_data=(x_test, y_test))
+
+
+# train save
+model.save("model/soc_gte80.h5")
