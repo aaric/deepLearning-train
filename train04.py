@@ -4,7 +4,10 @@
 @author Aaric
 @version 0.3.0-SNAPSHOT
 """
+import numpy as np
 import pymongo as pm
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 # mongo object
 mongo_client = pm.MongoClient("mongodb://10.0.11.50:27017")
@@ -123,13 +126,29 @@ for soc_split_line in soc_split_lines:
     split_matrix_data_list = split_matrix_data(soc_split_line)
     socs_m2ds.extend(split_matrix_data_list)
     soc_idx += len(split_matrix_data_list)
-    print("{0} - {1}".format(soc_idx, soc_total))
+    if soc_idx > soc_total:
+        print("{0} - {1}, over!".format(soc_idx, soc_total))
+        break
+    else:
+        print("{0} - {1}".format(soc_idx, soc_total))
+print("socs_m2ds length: {0}", len(socs_m2ds))
 
 
-# convert train matrix
-
-
-# print result
+# convert train array
+soc_features = []
+soc_targets = []
 for socs_m2d in socs_m2ds:
-    print(socs_m2d)
-print("{0} - {1}".format(soc_idx, soc_total))
+    soc_features.append(socs_m2d[0:-1])
+    soc_targets.append(socs_m2d[-1:])
+
+
+# train score
+x_data = np.asarray(soc_features).reshape(soc_idx, 30)
+y_data = np.asarray(soc_targets)
+x_train, x_test, y_train, y_test = train_test_split(x_data, y_data)
+print("train tts: {0}, {1}, {2}, {3}".format(x_train.shape, x_test.shape, y_train.shape, y_test.shape))
+
+train_model = LinearRegression().fit(x_train, y_train)
+train_score = train_model.score(x_test, y_test)
+print("train score: {0}".format(train_score))
+
