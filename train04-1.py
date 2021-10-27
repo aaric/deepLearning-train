@@ -6,11 +6,10 @@
 """
 import numpy as np
 import pymongo as pm
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from keras.models import Sequential
 from keras.layers import Dense
-
+from keras.models import Sequential
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 
 # mongo object
 mongo_client = pm.MongoClient("mongodb://10.0.11.50:27017")
@@ -108,7 +107,6 @@ vins = [
 ]
 print("vin list: {0}".format(vins))
 
-
 # query socs (n>=100000)
 soc_idx = 0
 soc_total = 1000
@@ -118,10 +116,8 @@ for soc_record in soc_records:
     # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
     soc_lines.append(soc_record.value)
 
-
 # convert linear array
 soc_split_lines = split_data(soc_lines)
-
 
 # convert matrix array
 socs_m2ds = []
@@ -136,7 +132,6 @@ for soc_split_line in soc_split_lines:
         print("{0} - {1}".format(soc_idx, soc_total))
 print("socs_m2ds length: {0}", len(socs_m2ds))
 
-
 # convert train array
 soc_features = []
 soc_targets = []
@@ -144,8 +139,7 @@ for socs_m2d in socs_m2ds:
     soc_features.append(socs_m2d[0:-1])
     soc_targets.append(socs_m2d[-1:])
 
-
-# train score
+# train model score
 x_data = np.asarray(soc_features).reshape(soc_idx, 30)
 y_data = np.asarray(soc_targets)
 x_train, x_test, y_train, y_test = train_test_split(x_data, y_data)
@@ -154,8 +148,7 @@ train_model = LinearRegression().fit(x_train, y_train)
 train_score = train_model.score(x_test, y_test)
 print("train score: {0}".format(train_score))
 
-
-# train loss
+# train model loss
 model = Sequential()
 model.add(Dense(10, activation='relu', input_shape=(x_train.shape[1],)))
 model.add(Dense(1))
@@ -163,6 +156,5 @@ model.compile(loss='mse', optimizer='rmsprop')
 model.summary()
 model.fit(x_train, y_train, batch_size=1000, epochs=256, validation_data=(x_test, y_test))
 
-
-# train save
+# train model save
 model.save("model/soc_gte80.h5")
