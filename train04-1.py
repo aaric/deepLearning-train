@@ -127,7 +127,7 @@ for vin in vins:
         split_matrix_data_list = split_matrix_data(soc_split_line)
         soc_m2ds.extend(split_matrix_data_list)
         soc_idx += len(split_matrix_data_list)
-        print("{0} - {1}".format(soc_idx, soc_total))
+    print("convert {0} matrix details: {1} - {2}".format(vin, soc_idx, soc_total))
 
     # convert break
     if soc_idx > soc_total:
