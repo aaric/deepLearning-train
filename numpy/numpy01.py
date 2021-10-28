@@ -6,7 +6,7 @@ NumPy - 内置属性
 """
 import numpy as np
 
-# 简单对象
+# 创建矩阵
 arr1 = np.array([[1, 2, 3],
                  [4, 5, 6],
                  [7, 8, 9]])
