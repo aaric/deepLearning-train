@@ -1,5 +1,11 @@
 # coding=utf-8
 
+"""
+测试工具方法
+
+@author Aaric
+@version 0.3.0-SNAPSHOT
+"""
 import datetime
 import time
 
@@ -11,13 +17,13 @@ print("{0}".format(int(time.mktime(datetime.datetime.now().timetuple()))))
 idx = [0]
 arr = [1, 2, 3, 2, 3, 4, 5, 1, 2, 3]
 for i in range(0, len(arr) - 1):
-    if arr[i] > arr[i+1]:
+    if arr[i] > arr[i + 1]:
         idx.append(i + 1)
 idx.append(len(arr))
 
 for i in range(0, len(idx) - 1):
     m = idx[i]
-    n = idx[i+1]
+    n = idx[i + 1]
     print(arr[m:n])
 
 # array extend

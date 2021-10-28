@@ -1,4 +1,10 @@
-# coding=utf-8
+"""
+函数
+
+@author Aaric
+@version 0.3.0-SNAPSHOT
+"""
+
 
 # 基于元组的可变参数（*可变参数）
 def sum(*numbers):
