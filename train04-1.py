@@ -108,12 +108,12 @@ vins = [
 print("vin list: {0}".format(vins))
 
 # query socs (n>=100000)
-soc_idx = 0
-soc_total = 100000
+soc_sample_idx = 0
+soc_sample_total = 150000
 soc_m2ds = []
 for vin in vins:
     # load mongo records
-    soc_records = load_data(vin, soc_total // len(vins))
+    soc_records = load_data(vin, soc_sample_total // len(vins))
     soc_lines = []
     for soc_record in soc_records:
         # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
@@ -126,12 +126,12 @@ for vin in vins:
     for soc_split_line in soc_split_lines:
         split_matrix_data_list = split_matrix_data(soc_split_line)
         soc_m2ds.extend(split_matrix_data_list)
-        soc_idx += len(split_matrix_data_list)
-    print("convert {0} matrix details: {1} - {2}".format(vin, soc_idx, soc_total))
+        soc_sample_idx += len(split_matrix_data_list)
+    print("convert {0} matrix details: {1} - {2}".format(vin, soc_sample_idx, soc_sample_total))
 
     # convert break
-    if soc_idx > soc_total:
-        print("{0} - {1}, over!".format(soc_idx, soc_total))
+    if soc_sample_idx > soc_sample_total:
+        print("{0} - {1}, over!".format(soc_sample_idx, soc_sample_total))
         break
 
 # convert train array
@@ -142,7 +142,7 @@ for soc_m2d in soc_m2ds:
     soc_targets.append(soc_m2d[-1:])
 
 # train model score
-x_data = np.asarray(soc_features).reshape(soc_idx, 30)
+x_data = np.asarray(soc_features).reshape(soc_sample_idx, 30)
 y_data = np.asarray(soc_targets)
 x_train, x_test, y_train, y_test = train_test_split(x_data, y_data)
 # print("train tts: {0}, {1}, {2}, {3}".format(x_train.shape, x_test.shape, y_train.shape, y_test.shape))
