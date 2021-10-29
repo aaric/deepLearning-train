@@ -42,3 +42,4 @@ print(np.transpose(arr2))
 
 # 矩阵乘法
 print(arr1.dot(arr3))
+print(np.dot(arr1, arr3))
