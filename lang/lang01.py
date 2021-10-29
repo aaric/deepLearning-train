@@ -62,4 +62,3 @@ def calc2(opr):
 # print
 print("{0} + {1} = {2}".format(2, 1, calc2("+")(2, 1)))
 print("{0} - {1} = {2}".format(2, 1, calc2("-")(2, 1)))
-
