@@ -1,28 +1,14 @@
 """
-NumPy - 矩阵运算
+NumPy - 合并
 
 @author Aaric
 @version 0.4.0-SNAPSHOT
 """
 import numpy as np
 
-# 索引
+# 合并
 arr1 = np.array([[1, 5, 3],
                  [2, 6, 4]])
-print(arr1.shape)
-print(arr1[1][2])
-print(arr1[1, 2])
-print(arr1[:, 2])
-
-# 迭代
-for hi in arr1:
-    print(hi)
-for vi in arr1.T:
-    print(vi)
-for fi in arr1.flat:
-    print(fi)
-
-# 合并
 arr2 = np.array([[1, 1, 1],
                  [1, 1, 1]])
 print(arr2.shape)
