@@ -82,7 +82,7 @@ class Soc:
 
 # list vin
 """
-vins = db_collection.distinct("vin", {
+vins = mongo_collection.distinct("vin", {
     # 指定车型
     "vehicleType": "EP22MCE",
     # 运行状态：1-纯电，2-混动，3-燃油
