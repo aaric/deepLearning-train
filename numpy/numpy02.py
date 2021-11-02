@@ -32,3 +32,11 @@ print(arr5)
 print(arr6)
 print(arr7)
 print(arr8)
+
+# 随机数矩阵
+arr9 = np.random.random((3, 2))
+arr10 = np.random.randint(0, 10, size=(3, 2))
+arr11 = np.random.normal(size=(3, 2))
+print(arr9)
+print(arr10)
+print(arr11)
