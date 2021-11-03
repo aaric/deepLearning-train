@@ -23,10 +23,10 @@ model.add(Dense(units=1, input_dim=1))
 model.compile(optimizer="sgd", loss="mse")
 
 # 训练3001个批次
-for index in range(3001):
-    cost = model.train_on_batch(x_data, y_data)
-    if index % 500 == 0:
-        print("cost: {0}".format(cost))
+for count in range(3001):
+    loss = model.train_on_batch(x_data, y_data)
+    if count % 500 == 0:
+        print("loss: {0}".format(loss))
 
 # 打印权值和偏置值
 w, b = model.layers[0].get_weights()
