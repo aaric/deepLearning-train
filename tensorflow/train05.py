@@ -184,6 +184,17 @@ class Soc:
         model = load_model(file_path)
         return model.predict(x_data)
 
+    @classmethod
+    def recursion2soc80(cls, model, arr, count=0):
+        count += 1
+        print(arr[-30:])
+        x_data = np.array(arr[-30:]).reshape(1, 30)
+        next_soc = int(model.predict(x_data)[0, 0])
+        print("{0} -> {1}".format(count, next_soc))
+        if 80 > model.predict(x_data):
+            arr.append(next_soc)
+            return Soc.recursion2soc80(model, arr, count)
+
 
 if __name__ == "__main__":
     # 初始化Soc对象
@@ -215,3 +226,11 @@ if __name__ == "__main__":
                        93, 93,
                        93, 93, 93]
     print("next gte80 soc: {0}".format(Soc.apply_model(soc_gte80_file_path, soc_gte80_lines)))
+
+    # 递归预测
+    soc_extra_lines = [27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29, 29,
+                       29,
+                       29, 29,
+                       29, 29, 29]
+    app_model = load_model(soc_lte80_file_path)
+    Soc.recursion2soc80(app_model, soc_extra_lines)
