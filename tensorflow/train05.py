@@ -96,11 +96,9 @@ class Soc:
         soc_sample_idx = 0
         soc_sample_total = sample_total
         soc_m2d_list = []
-        print(soc_sample_total // len(vin_list))
         for vin in vin_list:
             # load mongo records
             soc_list = self.load_soc_list(vin, soc_min, soc_max, soc_sample_total // len(vin_list))
-            print("soc_list", soc_list)
             soc_line_list = []
             for soc in soc_list:
                 # print("{0}: {1} - {2}".format(soc.vin, soc.value, soc.seconds))
@@ -108,7 +106,6 @@ class Soc:
                 soc_line_list.append(soc)
 
             # convert linear array
-            print("soc_line_list", soc_line_list)
             soc_split_line_list = Soc.split_data(soc_line_list)
 
             # convert matrix array
@@ -189,7 +186,8 @@ class Soc:
         count += 1
         print(arr[-30:])
         x_data = np.array(arr[-30:]).reshape(1, 30)
-        next_soc = int(model.predict(x_data)[0, 0])
+        # next_soc = int(model.predict(x_data)[0, 0])
+        next_soc = model.predict(x_data)[0, 0]
         print("{0} -> {1}".format(count, next_soc))
         if 80 > model.predict(x_data):
             arr.append(next_soc)
@@ -201,13 +199,12 @@ if __name__ == "__main__":
     soc = Soc()
 
     # 查询符合条件的VIN列表
-    # vins = soc.load_vin_list()
-    vins = ["TEST0000000000008"]
+    vins = soc.load_vin_list()
     print("vin list: {0}".format(vins))
 
     # 导出训练模型：0-80
     soc_lte80_file_path = "model/ep22mce_soc_lte80.h5"
-    # soc.save_lte80_model(soc_lte80_file_path, vins, 1000)
+    soc.save_lte80_model(soc_lte80_file_path, vins, 200000)
 
     # 应用训练模型：0-80
     soc_lte80_lines = [11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13,
@@ -218,7 +215,7 @@ if __name__ == "__main__":
 
     # 导出训练模型：80-100
     soc_gte80_file_path = "model/ep22mce_soc_gte80.h5"
-    # soc.save_gte80_model(soc_gte80_file_path, vins, 1000)
+    soc.save_gte80_model(soc_gte80_file_path, vins, 200000)
 
     # 应用训练模型：80-100
     soc_gte80_lines = [91, 91, 91, 91, 91, 91, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 92, 93, 93,
@@ -227,7 +224,7 @@ if __name__ == "__main__":
                        93, 93, 93]
     print("next gte80 soc: {0}".format(Soc.apply_model(soc_gte80_file_path, soc_gte80_lines)))
 
-    # 递归预测
+    # 递归预测：0-80
     soc_extra_lines = [27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29, 29,
                        29,
                        29, 29,
