@@ -36,7 +36,7 @@ print("w: {0}, b: {1}".format(w, b))
 y_rst = model.predict(x_data)
 # print("y_rst: {0}".format(y_rst))
 
-# 数据图形化
+# 可视化
 plt.scatter(x_data, y_data)
 plt.plot(x_data, y_rst, "red", lw=3)
 plt.show()
