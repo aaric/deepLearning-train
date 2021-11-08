@@ -2,7 +2,7 @@
 日期与时间示例
 
 @author Aaric
-@version 0.4.0-SNAPSHOT
+@version 0.5.0-SNAPSHOT
 """
 
 import time
