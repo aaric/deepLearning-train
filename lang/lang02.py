@@ -1,17 +1,9 @@
-# coding=utf-8
-
 """
-测试工具方法
+算法示例
 
 @author Aaric
 @version 0.3.0-SNAPSHOT
 """
-import datetime
-import time
-
-# 获取秒时间
-print("{0}".format(int(datetime.datetime.now().timestamp())))
-print("{0}".format(int(time.mktime(datetime.datetime.now().timetuple()))))
 
 # 1232345123 -> 123 2345 123
 idx = [0]

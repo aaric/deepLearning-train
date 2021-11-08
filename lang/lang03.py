@@ -1,5 +1,5 @@
 """
-异常
+异常示例
 
 @author Aaric
 @version 0.4.0-SNAPSHOT

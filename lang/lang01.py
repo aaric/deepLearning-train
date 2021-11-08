@@ -1,5 +1,5 @@
 """
-测试函数
+函数示例
 
 @author Aaric
 @version 0.3.0-SNAPSHOT
