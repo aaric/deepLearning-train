@@ -62,3 +62,10 @@ def calc2(opr):
 # print
 print("{0} + {1} = {2}".format(2, 1, calc2("+")(2, 1)))
 print("{0} - {1} = {2}".format(2, 1, calc2("-")(2, 1)))
+
+# 函数对象-zip
+arr1 = [1, 2, 3]
+arr2 = ["cat", "dog", "pig", "tiger"]
+arr3 = zip(arr1, arr2)
+for obj in arr3:
+    print(obj)
