@@ -1,5 +1,5 @@
 """
-NumPy - 直线
+Matplotlib - 直线
 
 @author Aaric
 @version 0.5.0-SNAPSHOT

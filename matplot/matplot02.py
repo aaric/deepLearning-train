@@ -1,5 +1,5 @@
 """
-NumPy - 散点图
+Matplotlib - 散点图
 
 @author Aaric
 @version 0.5.0-SNAPSHOT
