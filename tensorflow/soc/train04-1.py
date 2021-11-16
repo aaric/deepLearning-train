@@ -1,5 +1,5 @@
 """
-作业04 - 训练模型：soc -> 80-100
+作业04 - 训练模型：soc -> 0-80
 
 @author Aaric
 @version 0.3.0-SNAPSHOT
@@ -25,7 +25,7 @@ def load_data(vin, limit):
         "vin": vin,
         # SOC范围：0-80，80-100
         "vehicleBaseData_soc": {
-            "$gte": 80
+            "$lte": 80
         },
         # 车辆状态：1-启动，2-熄火，3-其他
         # "vehicleBaseData_vehicleStatus": 2,
@@ -81,7 +81,6 @@ class Soc:
 
 
 # list vin
-"""
 vins = mongo_collection.distinct("vin", {
     # 指定车型
     "vehicleType": "EP22MCE",
@@ -105,11 +104,12 @@ vins = [
     # total: 185882
     "TEST0000000000034"
 ]
+"""
 print("vin list: {0}".format(vins))
 
 # query socs (n>=100000)
 soc_sample_idx = 0
-soc_sample_total = 200000
+soc_sample_total = 150000
 soc_m2ds = []
 for vin in vins:
     # load mongo records
@@ -159,4 +159,4 @@ model.summary()
 model.fit(x_train, y_train, batch_size=1000, epochs=256, validation_data=(x_test, y_test))
 
 # train model save
-model.save("model/ep22mce_soc_gte80.h5")
+model.save("model/ep22mce_soc_lte80.h5")
