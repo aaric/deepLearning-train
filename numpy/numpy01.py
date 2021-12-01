@@ -44,3 +44,7 @@ print(arr2)
 # 深拷贝
 arr3 = arr1.copy()
 print(arr3)
+
+# 转置
+arr4 = np.transpose(arr1)
+print(arr4)
